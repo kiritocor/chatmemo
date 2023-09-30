@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatmemoController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+ Route::get('/ch', function() {
+    return view('chatmemo.top');
+});
+ Route::get('/chatmemo', [ChatmemoController::class, 'top']);   
