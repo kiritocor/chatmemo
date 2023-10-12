@@ -9,7 +9,7 @@ class ChatmemoController extends Controller
 {
     public function top(Chatmemo $chatmemo)//インポートしたPostをインスタンス化して$postとして使用。
 {
-   return view('chatmemo.top')->with(['chatmemo' => $chatmemo->get()]);  
+   return view('chatmemo.top');
 }
 
 }

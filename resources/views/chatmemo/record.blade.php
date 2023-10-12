@@ -107,12 +107,32 @@
             padding: 5px 10px;
             cursor: pointer;
         }
+        
+       .bubble {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 25px;
+            padding: 5px 10px;
+            margin: 5px;
+            text-align: left;
+            display: inline-block; /* バブルをインラインブロック要素に設定 */
+    max-width: 80%; /* バブルの最大幅を設定 */
+    word-wrap: break-word; /* 長いテキストがはみ出さないように改行 */
+        }
+
+        /* タイトルスタイル */
+        .title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="top">
-            <a class="circle-back-button" href="chatmemo2.html">戻る</a>
+            <a class="circle-back-button" href="/chatmemo">戻る</a>
             <select class="select-menu" id="select-menu-1">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
@@ -129,31 +149,43 @@
         <div class="divider"></div>
         <div class="middle">
             <!-- ここにスクロール可能なコンテンツを配置 -->
-            @foreach($groupedPosts as $year => $yearPosts)
-            <h2>{{ $year }}</h2>
-            <div class="year-container">
-                @foreach($yearPosts->groupBy(function ($post) {
-                    return $post->date->format('F Y');
-                }) as $monthYear => $monthYearPosts)
-                    <div class="month-container">
-                        <h3>{{ $monthYear }}</h3>
-                        <ul>
-                            @foreach($monthYearPosts->groupBy(function ($post) {
-                                return $post->date->format('d日');
-                            }) as $day => $dayPosts)
-                                <li class="right-align">{{ $day }}</li>
+
+@foreach($groupedData as $year => $yearData)
+    <h2><div class="bubble">{{ $year }}</div></h2>
+    <div class="year-container">
+        @foreach($yearData as $monthYear => $monthYearData)
+            <div class="month-container">
+                <h3><div class="bubble">{{ $monthYear }}</div></h3>
+                <ul>
+                    @foreach($monthYearData as $day => $dayData)
+                        <li class="right-align"><div class="bubble">{{ $day }}</div></li>
                                 <ul>
-                                    @foreach($dayPosts as $post)
-                                        <li class="right-align">{{ $post->title }}</li>
+                                    @foreach($dayData as $record)
+                                        <li class="right-align">
+                                            @switch(get_class($record))
+                                                @case('App\Models\Think')
+                                                    <div class="bubble">{{ $record->think_title }}</div>
+                                                    @break
+                                                @case('App\Models\Memo')
+                                                    <div class="bubble">{{ $record->memo_title }}</div>
+                                                    @break
+                                                @case('App\Models\Todolist')
+                                                    <div class="bubble">{{ $record->todo_title }}</div>
+                                                    @break
+                                                @case('App\Models\Plan')
+                                                    <div class="bubble">{{ $record->plan_title }}</div>
+                                                    @break
+                                            @endswitch
+                                        </li>
                                     @endforeach
                                 </ul>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endforeach
+                    @endforeach
+                </ul>
             </div>
         @endforeach
-        
+    </div>
+@endforeach
+ {{ $pagedData->links() }}
             <!-- 繰り返しコンテンツを追加してスクロール可能に -->
         </div>
         <div class="divider"></div>
@@ -162,10 +194,6 @@
                 <input type="text" class="search-input" placeholder="検索...">
                 <button type="submit" class="search-button">検索</button>
             </form>
-        </div>
-    </div>
-
-
     <script>
         const selectMenu1 = document.getElementById("select-menu-1");
         const selectMenu2 = document.getElementById("select-menu-2");

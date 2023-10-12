@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tag_id')->constrained();
+            $table->foreignId('tag_id')->nullable()->constrained();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('plan_title', 50);
             $table->timestamp('when_plan')->nullable();
