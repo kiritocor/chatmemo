@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('memos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tag_id')->constrained();
+            $table->foreignId('tag_id')->nullable()->constrained();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('memo_title', 50);
             $table->timestamps();

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('thinks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tag_id')->constrained();
+            $table->foreignId('tag_id')->nullable()->constrained();
             $table->foreignId('user_id')->constrained()->constrained();
             $table->string('think_title', 50);
             $table->timestamps();

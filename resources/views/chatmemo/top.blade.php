@@ -123,15 +123,15 @@
             <div class="rectangle-accordion">
                 <div class="accordion-item">
                     <div class="accordion-title">直近のメモ</div>
-                    <div class="accordion-text">たそがれ</div>
+                    <div class="accordion-text">a</div>
                 </div>
                 <div class="accordion-item">
                     <div class="accordion-title">予定</div>
-                    <div class="accordion-text">予定内容</div>
+                    <div class="accordion-text">b</div>
                 </div>
                 <div class="accordion-item">
                     <div class="accordion-title">やること</div>
-                    <div class="accordion-text">とどぃｓｔ</div>
+                    <div class="accordion-text">c</div>
                 </div>
             </div>        
             <!-- 繰り返しコンテンツを追加してスクロール可能に -->
@@ -139,10 +139,10 @@
         <div class="divider"></div>
         <div class="bottom">
             <!-- 左側のボタン -->
-            <a button class="circle-button" href="chatmemo_qpage.html">会話</a>
+            <a button class="circle-button" href="/qpage">会話</a>
             </button>
             <!-- 右側のボタン -->
-            <a button class="circle-button" href="chatmemo_record.html">記録</a>
+            <a button class="circle-button" href="/record">記録</a>
             </button>
         </div>
     </div>

@@ -2,7 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatmemoController; 
-
+use App\Http\Controllers\RecordController; 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TalkController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,11 +16,32 @@ use App\Http\Controllers\ChatmemoController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/qpage', function () {
+    return view('/login');
 });
 
- Route::get('/ch', function() {
-    return view('chatmemo.top');
+Route::get('/qpage', function () {
+    return view('chatmemo.qpage');
 });
- Route::get('/chatmemo', [ChatmemoController::class, 'top']);   
+
+Route::get('/talk/memo', function () {
+    return view('chatmemo.talk_memo');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/record', [RecordController::class, 'showData'])->name('chatmemo.record');
+    
+    Route::get('/chatmemo', [ChatmemoController::class, 'top']);
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    
+});
+
+Route::post('/save-message', [TalkController::class, 'saveMessage'])->name('save-message');
+
+require __DIR__.'/auth.php';

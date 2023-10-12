@@ -91,7 +91,7 @@
 </head>
 <body>
     <div class="top-section">
-        <a button class="circle-back-button" href="chatmemo2.html" >戻る</a>
+        <a button class="circle-back-button" href="/chatmemo" >戻る</a>
         </button>
         会話
     </div>
@@ -104,7 +104,7 @@
     </div>
 
     <div class="bottom-section">
-        <a href="talk_memo.html"><div class="button">出来事</div></a>
+        <a href="/talk/memo"><div class="button">出来事</div></a>
         <div class="button">予定</div>
         <div class="button">やるべきこと</div>
         <div class="button">考えたこと</div>
