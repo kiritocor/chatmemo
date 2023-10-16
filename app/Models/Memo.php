@@ -15,15 +15,20 @@ class Memo extends Model
      protected $guarded = [];
      
      protected $fillable = [
+    'id',
     'memo_title',
     'about',
     'important',
     'w_think',
 ];
 
-    public function user()
+    public function users()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function tags()
+    {
+        return $this->belongsTo(Tag::class, 'tag_id');
     }
     public function photo()   
 {

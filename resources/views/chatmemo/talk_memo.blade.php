@@ -195,7 +195,7 @@
             <!-- ここにスクロール可能なコンテンツを配置 -->
             <div id="chat-container">
                 <div class="message">
-                    <div class="bubble">何について話してくれますか</div>
+                    <div class="bubble">何について話してくれますか？</div>
                 </div>
             </div>
             <!-- 繰り返しコンテンツを追加してスクロール可能に -->
@@ -208,9 +208,6 @@
                 <button id="send-button" style="display: none;">送信</button>
                 <a id="circle-yes-button" style="display: none;">はい</a>
                 <a id="circle-no-button" style="display: none;">いいえ</a>
-                <div id="store-button-container">
-                    <input type="submit" id="store-button" value="store"/>
-                </div>
             </div>
         </div>
     </div>
@@ -221,11 +218,9 @@
         const circleyesbutton = document.getElementById("circle-yes-button");
         const circlenobutton = document.getElementById("circle-no-button");
         const sendButton = document.getElementById("send-button");
-        const storeButtonContainer = document.getElementById("store-button-container");
-        const storeButton = document.getElementById("store-button");
         const fixedMessages = [
             "リンクはある？",
-            "これは覚えておきたいこと？",
+            "これは重要なこと？",
             "どんなこと？",
             "どう思った？",
             "ありがとう！忘れないように記録しました。"
@@ -448,7 +443,6 @@ const answers = {};
 
         // Ajaxリクエストを送信
         function sendMessageToServer(answers) {
-            console.log(answers)
 
             if (editMode) { // 編集モードの場合のみ送信処理を実行
     
@@ -456,7 +450,7 @@ const answers = {};
                     const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
 
                     // Ajaxリクエストを送信
-                    fetch('/save-message', {
+                    fetch('/save-memo-message', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

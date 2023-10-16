@@ -24,12 +24,7 @@
             align-items: center;
             position: relative;
         }
-
-        /* 左から順に均等に分割 */
-        .top > * {
-            flex: 1;
-        }
-
+        
         .divider {
             border-top: 1px solid black;
             height: 100%; /* 要素の高さいっぱいに線を引く */
@@ -45,7 +40,7 @@
 
         /* 丸形のボタンスタイル */
         .circle-back-button {
-            width: 20px;
+            width: 60px;
             height: 45px;
             background-color: #007bff;
             color: #fff;
@@ -133,18 +128,21 @@
     <div class="container">
         <div class="top">
             <a class="circle-back-button" href="/chatmemo">戻る</a>
+            <p>重要度</p>
             <select class="select-menu" id="select-menu-1">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
+                <option value="all">all</option>
             </select>
+            <p>種類</p>
             <select class="select-menu" id="select-menu-2">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
+                <option value="all">all</option>
             </select>
+            <p>付箋</p>
         </div>
         <div class="divider"></div>
         <div class="middle">
@@ -162,20 +160,17 @@
                                 <ul>
                                     @foreach($dayData as $record)
                                         <li class="right-align">
-                                            @switch(get_class($record))
-                                                @case('App\Models\Think')
-                                                    <div class="bubble">{{ $record->think_title }}</div>
-                                                    @break
-                                                @case('App\Models\Memo')
-                                                    <div class="bubble">{{ $record->memo_title }}</div>
-                                                    @break
-                                                @case('App\Models\Todolist')
-                                                    <div class="bubble">{{ $record->todo_title }}</div>
-                                                    @break
-                                                @case('App\Models\Plan')
-                                                    <div class="bubble">{{ $record->plan_title }}</div>
-                                                    @break
-                                            @endswitch
+                                             @if ($record)
+                                                     @if ($record instanceof \App\Models\Think)
+                                                <div class="bubble"><a href="/record/think/{{ $record->id }}">{{ $record->title }}</a></div>
+                                            @elseif ($record instanceof \App\Models\Memo)
+                                                <div class="bubble"><a href="/record/memo/{{ $record->id }}">{{ $record->title }}</a></div>
+                                            @elseif ($record instanceof \App\Models\Todolist)
+                                                <div class="bubble"><a href="/record/todolist/{{ $record->id }}">{{ $record->title }}</a></div>
+                                            @elseif ($record instanceof \App\Models\Plan)
+                                                <div class="bubble"><a href="/record/plan/{{ $record->id }}">{{ $record->title }}</a></div>
+                                            @endif
+                                            @endif
                                         </li>
                                     @endforeach
                                 </ul>
@@ -185,7 +180,8 @@
         @endforeach
     </div>
 @endforeach
- {{ $pagedData->links() }}
+ {{ $pagedRecordDetails->links() }}
+ 
             <!-- 繰り返しコンテンツを追加してスクロール可能に -->
         </div>
         <div class="divider"></div>
@@ -197,18 +193,7 @@
     <script>
         const selectMenu1 = document.getElementById("select-menu-1");
         const selectMenu2 = document.getElementById("select-menu-2");
-
-        // セレクトメニュー1が変更されたときの処理
-        selectMenu1.addEventListener("change", function () {
-            const selectedValue = selectMenu1.value;
-            alert(`セレクトメニュー1の選択: ${selectedValue}`);
-        });
-
-        // セレクトメニュー2が変更されたときの処理
-        selectMenu2.addEventListener("change", function () {
-            const selectedValue = selectMenu2.value;
-            alert(`セレクトメニュー2の選択: ${selectedValue}`);
-        });
+  
     </script>
 </body>
 </html>
