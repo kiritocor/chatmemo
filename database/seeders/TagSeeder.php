@@ -17,8 +17,26 @@ class TagSeeder extends Seeder
     public function run()
     {
         DB::table('tags')->insert([
-                'name' => 'happy',
-                'user_id' => '1',
+            'id' => '1',
+                'name' => 'think',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+         ]);
+         DB::table('tags')->insert([
+             'id' => '2',
+                'name' => 'todolist',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+         ]);
+         DB::table('tags')->insert([
+             'id' => '3',
+                'name' => 'plan',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+         ]);
+         DB::table('tags')->insert([
+             'id' => '4',
+                'name' => 'memo',
                 'created_at' => new DateTime(),
                 'updated_at' => new DateTime(),
          ]);

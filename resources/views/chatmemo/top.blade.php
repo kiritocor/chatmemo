@@ -152,7 +152,7 @@
         const dateElement = document.getElementById('date');
         const currentDate = new Date();
         const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
-        dateElement.textContent = currentDate.toLocaleDateString('en-US', options);
+        dateElement.textContent = currentDate.toLocaleDateString('ja-US', options);
 
      // JavaScriptでクリックで展開/折りたたむ動作を実装
      const accordionItems = document.querySelectorAll('.accordion-item');
