@@ -100,22 +100,22 @@ class RecordController extends Controller
 
     public function planEdit(Think $think)
     {
-        $url = $memo->url ?? "ない";
+        $url = $plam->url ?? "ない";
         
         return view('chatmemo.edit_think')->with(['think' => $think, 'url' => $url]);
     }
 
     public function todoEdit(Plan $plan)
     {
-        $url = $memo->url ?? "ない";
+        $url = $todo->url ?? "ない";
         
         return view('chatmemo.edit_plan')->with(['plan' => $plan, 'url' => $url]);
     }
 
     public function thinkEdit(Todolist $todo)
     {
-        $url = $memo->url ?? "ない";
+        $url = $think->url ?? "ない";
         
-        return view('chatmemo.edit_memo')->with(['todo' => $todo, 'url' => $url]);
+        return view('chatmemo.edit_todo')->with(['todo' => $todo, 'url' => $url]);
     }
 }

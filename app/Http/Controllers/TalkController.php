@@ -51,13 +51,33 @@ public function savePlanMessage(Request $request,Plan $plan, Link $link )
 {
     $data = $request->json()->all();
     $user=auth()->user();
-    // Memoモデルにデータを保存
+    
+    // ユーザが提供した日付文字列
+$dateString = $data['question3'];
+
+if ($dateString !== "なし") {
+// 正規表現を使用して年、月、日、時、分を抽出
+preg_match('/(\d+)年(\d+)月(\d+)日(\d+)時(\d+)分/', $dateString, $matches);
+
+$year = $matches[1];
+$month = $matches[2];
+$day = $matches[3];
+$hour = $matches[4];
+$minute = $matches[5];
+
+// Carbonライブラリを使用してtimestampを生成
+$date = \Carbon\Carbon::create($year, $month, $day, $hour, $minute);
+
+// Eloquentモデルを使用してデータベースに保存
+    $plan->when_plan = $date;
+}
+
     $plan->user_id = $user->id;
-    $plan->memo_title = $data['question1'];
-    $plan->about = $data['question4'];
-    $plan->important = $data['question3'];
+    $plan->plan_title = $data['question1'];
+    $plan->where = $data['question4'];
     $plan->w_think = $data['question5'];
-    $memo->tag_id = 3;
+    $plan->plan_detail = $data['question6'];
+    $plan->tag_id = 3;
     $plan->save();
 
     
@@ -87,18 +107,37 @@ public function saveTodoMessage(Request $request,Todolist $Todo, Link $link )
 {
     $data = $request->json()->all();
     $user=auth()->user();
-    // Memoモデルにデータを保存
-    $Todo->user_id = $user->id;
-    $Todo->todo_title = $data['question1'];
-    $Todo->about = $data['question4'];
-    $Todo->important = $data['question3'];
-    $Todo->w_think = $data['question5'];
-    $memo->tag_id = 2;
-    $Todo->save();
+    
+    // ユーザが提供した日付文字列
+$dateString = $data['question6'];
+
+if ($dateString !== "なし") {
+// 正規表現を使用して年、月、日、時、分を抽出
+preg_match('/(\d+)年(\d+)月(\d+)日(\d+)時(\d+)分/', $dateString, $matches);
+
+$year = $matches[1];
+$month = $matches[2];
+$day = $matches[3];
+$hour = $matches[4];
+$minute = $matches[5];
+
+// Carbonライブラリを使用してtimestampを生成
+$date = \Carbon\Carbon::create($year, $month, $day, $hour, $minute);
+
+// Eloquentモデルを使用してデータベースに保存
+    $todo->when_todo = $date;
+}
+    $todo->user_id = $user->id;
+    $todo->todo_title = $data['question1'];
+    $todo->about = $data['question3'];
+    $todo->important = $data['question4'];
+    $todo->w_think = $data['question5'];
+    $todo->tag_id = 2;
+    $todo->save();
 
     
     // // Memoモデルに保存したデータのIDを取得
-    $TodoID = $Todo->id;
+    $todoID = $todo->id;
 
       //$data['question2'] の内容に応じてデータを保存
            if (filter_var($data['question2'], FILTER_VALIDATE_URL)) {
@@ -106,7 +145,7 @@ public function saveTodoMessage(Request $request,Todolist $Todo, Link $link )
            // "http://"または"https://"プロトコルを持つ正当なURLの場合、Link モデルに保存
                $link = new Link();
                $link->url = $data['question2'];
-               $link->todolist_id = $TodoID;
+               $link->todolist_id = $todoID;
                $link->save();
            } elseif (is_string($data['question2']) && file_exists($data['question2'])) {
                // $data['question2'] がファイルパスの場合、Photo モデルに保存
@@ -126,10 +165,11 @@ public function saveThinkMessage(Request $request,Think $think, Link $link )
     // Memoモデルにデータを保存
     $think->user_id = $user->id;
     $think->think_title = $data['question1'];
-    $think->about = $data['question4'];
-    $think->important = $data['question3'];
-    $think->w_think = $data['question5'];
-    $memo->tag_id = 1;
+    $think->when = $data['question3'];
+    $think->important = $data['question4'];
+    $think->about = $data['question5'];
+    $think->w_think = $data['question6'];
+    $think->tag_id = 1;
     $think->save();
 
     
