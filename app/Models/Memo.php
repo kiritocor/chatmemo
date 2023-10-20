@@ -11,7 +11,6 @@ class Memo extends Model
     use HasFactory;
     
      protected $table = 'memos';
-     protected $dates = ['record_at'];
      protected $guarded = [];
      
      protected $fillable = [

@@ -105,9 +105,9 @@
 
     <div class="bottom-section">
         <a href="/talk/memo"><div class="button">出来事</div></a>
-        <div class="button">予定</div>
-        <div class="button">やるべきこと</div>
-        <div class="button">考えたこと</div>
+        <a href="/talk/plan"><div class="button">予定</div></a>
+        <a href="/talk/todo"><div class="button">やるべきこと</div></a>
+        <a href="/talk/think"><div class="button">考えたこと</div></a>
     </div>
 </body>
 </html>
