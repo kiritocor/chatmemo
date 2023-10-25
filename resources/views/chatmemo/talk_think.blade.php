@@ -219,7 +219,7 @@
         const circlenobutton = document.getElementById("circle-no-button");
         const sendButton = document.getElementById("send-button");
         const fixedMessages = [
-            "きっかけになった、関連するリンクとかはありますか"
+            "きっかけになった、関連するリンクとかはありますか",
             "何をしていた時に考えていましたか？",
             "その考えは重要なことですか？",
             "具体的にどんなこと？",
@@ -273,7 +273,7 @@ function sendMessage() {
    
 }
 
-    // 左揃えのメッセージが５回入力されたら確定ボタンを表示
+    // 左揃えのメッセージが6回入力されたら確定ボタンを表示
     if (pendingMessages.length >= 6 && !inputFormHidden) {
         confirmButton.style.display = "block";
         messageInput.style.display = "none"; // メッセージ入力フォームを非表示に

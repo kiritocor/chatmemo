@@ -45,6 +45,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::post('/filter-by-importance', [RecordController::class ,'filterByImportance']);
+Route::post('/filter-by-category', [RecordController::class ,'filterByCategory']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/record', [RecordController::class, 'showData'])->name('chatmemo.record');
     
@@ -54,8 +57,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/record/todo/{todo}', [RecordController::class ,'todoEdit']);
     Route::get('/chatmemo', [ChatmemoController::class, 'top']);
 Route::post('/save-memo-message', [TalkController::class, 'saveMemoMessage']);
-Route::post('/save-plan-message', [TalkController::class, 'saveplanMessage']);
-Route::post('/save-todo-message', [TalkController::class, 'savetodoMessage']);
+Route::post('/save-plan-message', [TalkController::class, 'savePlanMessage']);
+Route::post('/save-todo-message', [TalkController::class, 'saveTodoMessage']);
 Route::post('/save-think-message', [TalkController::class, 'saveThinkMessage']);
 Route::put('/record/memo/{memo}/update', [EditController::class, 'updateMemoMessage']);
 Route::put('/record/think/{think}/update', [EditController::class, 'updateThinkMessage']);

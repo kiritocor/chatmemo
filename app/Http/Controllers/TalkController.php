@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Talk_memo;
 use App\Models\Link;
 use App\Models\Memo;
+use App\Models\Plan;
+use App\Models\Todolist;
+use App\Models\Think;
 use App\Models\Photo;
 use App\Models\Tag;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TalkController extends Controller
 {
-    public function saveMemoMessage(Request $request,Memo $memo, )
+    public function saveMemoMessage(Request $request, Memo $memo, Link $link)
 {
     $data = $request->json()->all();
     $user=auth()->user();
@@ -47,7 +51,7 @@ class TalkController extends Controller
     return response()->json(['message' => 'Message saved successfully']);
 }
 
-public function savePlanMessage(Request $request,Plan $plan, Link $link )
+public function savePlanMessage(Request $request,Plan $plan, Link $link)
 {
     $data = $request->json()->all();
     $user=auth()->user();
@@ -103,7 +107,7 @@ $date = \Carbon\Carbon::create($year, $month, $day, $hour, $minute);
     return response()->json(['message' => 'Message saved successfully']);
 }
 
-public function saveTodoMessage(Request $request,Todolist $Todo, Link $link )
+public function saveTodoMessage(Request $request, Todolist $todo, Link $link)
 {
     $data = $request->json()->all();
     $user=auth()->user();
@@ -158,7 +162,7 @@ $date = \Carbon\Carbon::create($year, $month, $day, $hour, $minute);
     return response()->json(['message' => 'Message saved successfully']);
 }
 
-public function saveThinkMessage(Request $request,Think $think, Link $link )
+public function saveThinkMessage(Request $request, Think $think, Link $link)
 {
     $data = $request->json()->all();
     $user=auth()->user();

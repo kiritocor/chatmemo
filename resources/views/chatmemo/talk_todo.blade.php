@@ -314,6 +314,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function sendMessage() {
 messageText = messageInput.value.trim();
     if (messageText === "") return;
+    console.log(pendingMessages.length)
 
     // ユーザーの左揃えメッセージを表示
     const messageDiv = document.createElement("div");
@@ -344,7 +345,7 @@ if (pendingMessages.length === 3 ){
      circleyesbutton.style.display = "block";
      circlenobutton.style.display = "block";
 }
-console.log(pendingMessages.length)
+
 if (pendingMessages.length === 5 ){
     // メッセージフィールドを非表示にする
     messageInput.style.display = "none";
@@ -357,7 +358,7 @@ if (pendingMessages.length === 5 ){
 }
 
     // 左揃えのメッセージが６回入力されたら確定ボタンを表示
-if (pendingMessages.length >= 6 && !inputFormHidden) {
+if (pendingMessages.length >= 4 && !inputFormHidden) {
         confirmButton.style.display = "block";
         messageInput.style.display = "none"; // メッセージ入力フォームを非表示に
         editMode = true; // 編集モードを有効に
