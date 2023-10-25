@@ -14,7 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('todolists', function (Blueprint $table) {
-           $table->dateTime('record_at', $precision = 0);
+            $table->string('important', 50)->nullable();
+            $table->string('about', 200)->nullable();
+            $table->string('w_think', 200)->nullable();
         });
     }
 

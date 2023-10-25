@@ -178,14 +178,14 @@
                 <div class="bubble right-bubble">リンクはある？</div>
             </div>
             <div class="message left">
-                <div class="bubble"><div>
+                <div class="bubble">
     @if ($url !== "ない")
         <a href="{{ $url }}" >Memo URL</a>
     @else
-        <div class="message　left">ない</div>
+        ない
     @endif
-</div></div>
-            </div>
+</div>
+</div>
             <div class="message">
                 <div class="bubble right-bubble">具体的には？</div>
             </div>
@@ -196,7 +196,7 @@
                 <div class="bubble right-bubble">重要なやるべきこと？それともやりたいこと？</div>
             </div>
             <div class="message left">
-                <div class="bubble" id=yesorno >{{$todo->important}}</div>
+                <div class="bubble" id="yesorno">{{$todo->important}}</div>
             </div>
             <div class="message">
                 <div class="bubble right-bubble">そのことに対してどう思っている？</div>
@@ -208,14 +208,12 @@
                 <div class="bubble right-bubble">いつまでにやっておきたい？</div>
             </div>
             <div class="message left">
-                <div class="bubble"><div>
-    @if ($url !== "なし")
-        <a id=date >{{$todo->when_todo}}</a>
+    @if ($formattedDate !== "なし")
+        <div class="bubble" id="date">{{$formattedDate}}</div>
     @else
-        <div class="message　left">なし</div>
+        <div class="bubble" id="date">なし</div>
     @endif
-</div></div>
-            </div>
+</div>
             <div class="message">
                 <div class="bubble right-bubble">ありがとう！忘れないように記録しておきました。</div>
             </div>
@@ -228,6 +226,7 @@
                 <button id="send-button" style="display: none;">送信</button>
                 <div class="bubble" id="circle-yes-button" style="display: none;">はい</div>
                 <div class="bubble" id="circle-no-button" style="display: none;">いいえ</div>
+                <div class="bubble" id="circle-dateno-button" style="display: none;">いいえ</div>
                 <label for="year" style="display: none;">年:</label>
     <select name="year" id="year" style="display: none;"></select>
 
@@ -251,6 +250,7 @@
 const editButton = document.getElementById("edit-button");
 const circleyesbutton = document.getElementById("circle-yes-button");
 const circlenobutton = document.getElementById("circle-no-button");
+const circledatenobutton = document.getElementById("circle-dateno-button");
 const circlecancelbutton = document.getElementById("circle-cancel-button");
 const sendButton = document.getElementById("send-button");
 const chatContainer = document.querySelector(".middle");
@@ -338,7 +338,7 @@ chatContainer.addEventListener("click", function (e) {
         const messageDiv = e.target.closest(".message");
 
         if (messageDiv && messageDiv.classList.contains("left")) {
-            const messageText = messageDiv.querySelector(".bubble").textContent;
+            messageText = messageDiv.querySelector(".bubble").textContent;
             const originalMessageIndex = pendingMessages.indexOf(messageText);
             const yesOrNoDiv = messageDiv.querySelector("#yesorno");
             const dateDiv = messageDiv.querySelector("#date");
@@ -369,7 +369,7 @@ circlenobutton.addEventListener("click", function () {
         // ここで「いいえ」の入力を受け付ける処理を追加
         // ボタンを非表示にし、メッセージフィールドを表示する
         const bubbleDiv = messageDiv.querySelector(".bubble");
-         bubbleDiv.textContent = 'いいえ'; // 選択されたメッセージ
+        bubbleDiv.textContent = 'いいえ'; // 選択されたメッセージ
          
         circlecancelbutton.style.display = "block";
         circleyesbutton.style.display = "none"
@@ -379,14 +379,13 @@ circlenobutton.addEventListener("click", function () {
     chatContainer.scrollTop = chatContainer.scrollHeight;
     sendButton.style.display = "block";
     });
-     }else
-     (dateDiv === e.target){
+     } else if (dateDiv === e.target){
              // はい・いいえのボタンを表示する
              circlecancelbutton.style.display = "none";
      document.querySelectorAll("label, select, button#savedate").forEach(element => {
             element.style.display = "block";
         });
-     circlenobutton.style.display = "block"
+     circledatenobutton.style.display = "block"
      
       savedate.addEventListener("click", function () {
         // はいボタンがクリックされた場合の処理
@@ -408,14 +407,14 @@ const formattedDate = `${selectedYear}年${selectedMonth}月${selectedDay}日${s
             element.style.display = "none";
         });
         savedate.style.display = "none"
-    circlenobutton.style.display = "none"
+    circledatenobutton.style.display = "none"
 
     // スクロールを一番下に移動
     chatContainer.scrollTop = chatContainer.scrollHeight;
 sendButton.style.display = "block";
     });
 
-circlenobutton.addEventListener("click", function () {
+circledatenobutton.addEventListener("click", function () {
         // いいえボタンがクリックされた場合の処理
         // ここで「いいえ」の入力を受け付ける処理を追加
         // ボタンを非表示にし、メッセージフィールドを表示する
@@ -427,14 +426,14 @@ circlenobutton.addEventListener("click", function () {
             element.style.display = "none";
         });
         savedate.style.display = "none"
-        circlenobutton.style.display = "none"
+        circledatenobutton.style.display = "none"
 
     // スクロールを一番下に移動
     chatContainer.scrollTop = chatContainer.scrollHeight;
     sendButton.style.display = "block";
     });
-     }else{
-            editMessage(messageDiv, messageText, originalMessageIndex);
+     } else {
+    editMessage(messageDiv, messageText, originalMessageIndex)
             }
         }
     }
@@ -458,10 +457,12 @@ editMode = false;
         }
     });
 };
-// 送信ボタンクリック時の処理
-sendButton.addEventListener("click", function () {
-if (editMode) {
- // 編集されたメッセージを格納するオブジェクト
+
+sendButton.addEventListener("click", function (){
+    if (editMode) {
+        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
+        
+        // 編集されたメッセージを格納するオブジェクト
         const editedMessage = {};
 
         // メッセージの要素を取得
@@ -472,17 +473,7 @@ if (editMode) {
             const messageText = messageDiv.querySelector(".bubble").textContent;
             editedMessage[`question${index + 1}`] = messageText;
         });
-        // サーバーにメッセージを送信してアップデート
-        sendMessageToServer(editedMessage);
-        editMode = false;
-    }
-});
-
-
-function sendMessageToServer(editedMessage) {
-    if (editMode) {
-        const csrfToken = document.head.querySelector('meta[name="csrf-token"]').content;
-
+        
  const todoId = {{ $todo->id }};
         // メッセージをサーバーに送信
         fetch(`/record/todo/${todoId}/update`, { 
@@ -509,6 +500,6 @@ function sendMessageToServer(editedMessage) {
             alert(error.message);
         });
     }
-};
+});
 </script>
 </html>

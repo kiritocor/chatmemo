@@ -229,7 +229,6 @@
         </div>
     </div>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
         const chatContainer = document.getElementById("chat-container");
         const messageInput = document.getElementById("message-input");
         const confirmButton = document.getElementById("confirm-button");
@@ -532,7 +531,7 @@ const answers = {};
      for (let i = 0; i < pendingMessages.length; i++) {
             answers[`question${i + 1}`] = pendingMessages[i];
         }   
-
+console.log(answers)
         // サーバーにデータを送信
         sendMessageToServer(answers, true)
         
@@ -585,7 +584,7 @@ const answers = {};
                 
             }
         }
-        });
+        
     </script>
     
 </body>

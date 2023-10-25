@@ -4,18 +4,30 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class Plan extends Model
 {
     use HasFactory;
     
      protected $table = 'plans';
-     protected $dates = ['record_at'];
      protected $guarded = [];
      
-    public function user()
+     protected $fillable = [
+    'id',
+    'plan_title',
+    'where',
+    'plan_detail',
+    'w_think',
+];
+     
+    public function users()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+    public function tags()
+    {
+        return $this->belongsTo(Tag::class, 'tag_id');
     }
     public function photo()   
 {
@@ -29,12 +41,5 @@ class Plan extends Model
 {
     // updated_atで降順に並べたあと、limitで件数制限をかける
     return $this->orderBy('created_at', 'DESC')->limit($limit_count)->get();
-}
-public function getPaginateByLimit(int $limit_count = 10)
-{
-    // updated_atで降順に並べたあと、limitで件数制限をかける
-    return $this->orderBy('created_at', 'DESC')->paginate($limit_count);
-    
-     return $plans;
 }
 }

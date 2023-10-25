@@ -13,8 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('plans', function (Blueprint $table) {
-             $table->dateTime('record_at', $precision = 0);
+        Schema::table('thinks', function (Blueprint $table) {
+            $table->string('when', 200)->nullable();
+            $table->string('important', 50)->nullable();
+            $table->string('about', 200)->nullable();
+            $table->string('w_think', 200)->nullable();
         });
     }
 
@@ -25,7 +28,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('plans', function (Blueprint $table) {
+        Schema::table('thinks', function (Blueprint $table) {
             //
         });
     }

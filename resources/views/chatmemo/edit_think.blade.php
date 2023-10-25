@@ -190,25 +190,25 @@
                 <div class="bubble right-bubble">何をしていた時に考えていましたか？</div>
             </div>
             <div class="message left">
-                <div class="bubble" >{{$todo->when}}</div>
+                <div class="bubble" >{{$think->when}}</div>
             </div>
             <div class="message">
                 <div class="bubble right-bubble">その考えは重要なことですか？</div>
             </div>
             <div class="message left">
-                <div class="bubble" id=yesorno >{{$todo->important}}</div>
+                <div class="bubble" id=yesorno >{{$think->important}}</div>
             </div>
             <div class="message">
                 <div class="bubble right-bubble">具体的にどんなこと？</div>
             </div>
             <div class="message left">
-                <div class="bubble">{{$todo->about}}</div>
+                <div class="bubble">{{$think->about}}</div>
             </div>
             <div class="message">
                 <div class="bubble right-bubble">このことに対してどう思う？</div>
             </div>
             <div class="message left">
-                <div class="bubble">{{$todo->w_think}}</div>
+                <div class="bubble">{{$think->w_think}}</div>
             </div>
             <div class="message">
                 <div class="bubble right-bubble">ありがとう！忘れないように記録しました。</div>

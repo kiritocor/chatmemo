@@ -95,7 +95,7 @@ public function updatePlanMessage(Request $request, Plan $plan) {
     $editedMessage = $request->json()->all();
     
     // ユーザが提供した日付文字列
-$dateString = $data['question3'];
+$dateString = $editedMessage['question3'];
 
 if ($dateString !== "なし") {
 // 正規表現を使用して年、月、日、時、分を抽出
@@ -151,7 +151,7 @@ public function updateTodoMessage(Request $request, Todolist $todo) {
     $editedMessage = $request->json()->all();
     
     // ユーザが提供した日付文字列
-$dateString = $data['question6'];
+$dateString = $editedMessage['question6'];
 
 if ($dateString !== "なし") {
 // 正規表現を使用して年、月、日、時、分を抽出
