@@ -87,6 +87,10 @@
         .button:hover {
             background-color: #ddd;
         }
+        a{
+            text-decoration: none;
+            color: black;
+        }
     </style>
 </head>
 <body>

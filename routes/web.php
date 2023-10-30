@@ -55,7 +55,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/record/memo/{memo}', [RecordController::class ,'memoEdit']);
     Route::get('/record/plan/{plan}', [RecordController::class ,'planEdit']);
     Route::get('/record/todo/{todo}', [RecordController::class ,'todoEdit']);
+    Route::get('/search', [RecordController::class ,'search']);
     Route::get('/chatmemo', [ChatmemoController::class, 'top']);
+    Route::post('/updateSorve', [ChatmemoController::class, 'updateSorve']);
+    Route::post('/updateunSorve', [ChatmemoController::class, 'updateunSorve']);
+    Route::post('/filter-by-unsorve', [ChatmemoController::class ,'filterByunSorve']);
+    Route::post('/filter-by-sorve', [ChatmemoController::class ,'filterBySorve']);
 Route::post('/save-memo-message', [TalkController::class, 'saveMemoMessage']);
 Route::post('/save-plan-message', [TalkController::class, 'savePlanMessage']);
 Route::post('/save-todo-message', [TalkController::class, 'saveTodoMessage']);

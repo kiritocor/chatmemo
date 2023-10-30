@@ -202,6 +202,10 @@
             display: block;
         }
         
+        a{
+            text-decoration: none;
+            color: black;
+        }
     </style>
 </head>
 <body>
@@ -211,9 +215,9 @@
             <a class="circle-back-button" href="/chatmemo">戻る</a>
             <p>重要度</p>
             <select class="select-menu" id="importanceSelect">
+                <option value="all">すべて</option>
                 <option value="yes">重要</option>
                 <option value="no">そこまで</option>
-                <option value="all">すべて</option>
             </select>
             <p>種類</p>
             <select class="select-menu" id="categoryselect">
@@ -241,7 +245,7 @@
                                 <ul>
                                     @foreach($dayData as $record)
                                         <li class="right-align">
-                                             @if ($record)
+                                            @if ($record)
                                             @if ($record instanceof \App\Models\Think)
                                                 <div class="bubble"><a href="/record/think/{{ $record->id }}">{{ $record->title }}</a></div>
                                             @elseif ($record instanceof \App\Models\Memo)
@@ -269,9 +273,10 @@
         <div class="divider"></div>
         <div class="bottom">
             <form class="search-form">
-                <input type="text" class="search-input" placeholder="検索...">
-                <button type="submit" class="search-button">検索</button>
-            </form>
+    <input type="text" class="search-input" id="search-input" placeholder="検索...">
+    <div class="search-results" id="search-results"></div>
+</form>
+
     <script>
   document.getElementById('importanceSelect').addEventListener('change', function () {
         const selectedImportance = this.value;
@@ -447,6 +452,92 @@ dataContainer.addEventListener('click', (e) => {
     }
 });
 
+
+
+const searchInput = document.getElementById('search-input');
+const searchResults = document.getElementById('search-results');
+
+searchInput.addEventListener('input', () => {
+    const searchQuery = searchInput.value;
+
+    if (searchQuery.trim() === '') {
+        searchResults.innerHTML = ''; // 入力が空の場合、予測結果をクリア
+        return;
+    }
+
+    // サーバーへの非同期リクエストを送信
+    fetch(`/search?query=${searchQuery}`)
+        .then(response => response.json())
+        .then(data => {
+            // 取得したデータを表示
+        const dataContainer = document.getElementById('dataContainer');
+        dataContainer.innerHTML = ''; // 既存のデータをクリア
+
+        // 年ごとにデータを表示
+        for (const year in data) {
+            const yearData = data[year];
+            const yearElement = document.createElement('div');
+            yearElement.className = 'year-container';
+            dataContainer.appendChild(yearElement);
+            
+            const yearmonthElement = document.createElement('h2');
+            yearmonthElement.innerHTML = `<div class="yearbubble">${year}</div>`;
+            yearElement.appendChild(yearmonthElement);
+
+            // 月ごとにデータを表示
+            for (const month in yearData) {
+                const monthData = yearData[month];
+                const monthElement = document.createElement('div');
+                monthElement.className = 'month-container';
+                yearElement.appendChild(monthElement);
+
+                const monthYearElement = document.createElement('h3');
+                monthYearElement.innerHTML = `<div class="monthbubble">${month}</div>`;
+                monthElement.appendChild(monthYearElement);
+
+                // 日ごとにデータを表示
+                for (const day in monthData) {
+                    const dayData = monthData[day];
+                    const dayElement = document.createElement('div');
+                　　dayElement.className = 'day-container';
+                　　monthElement.appendChild(dayElement);
+                    
+                　　const daymonthElement = document.createElement('h4');
+                　　daymonthElement.innerHTML = `<div class="daybubble">${day}</div>`;
+                　　dayElement.appendChild(daymonthElement);
+                
+                　　const ulElement = document.createElement('ul');
+                    daymonthElement.appendChild(ulElement);
+                    
+                    // レコードを表示
+                    dayData.forEach(record => {
+                        const recordElement = document.createElement('li');
+                        recordElement.className = 'right-align';
+
+                        // レコードの種類に応じてリンクを生成
+                        if (record.think_title) {
+                            recordElement.innerHTML = `<div class="bubble"><a href="/record/think/${record.id}">${record.think_title}</a></div>`;
+                        } else if (record.memo_title) {
+                            recordElement.innerHTML = `<div class="bubble"><a href="/record/memo/${record.id}">${record.memo_title}</a></div>`;
+                        } else if (record.todo_title) {
+                            recordElement.innerHTML = `<div class="bubble"><a href="/record/todo/${record.id}">${record.todo_title}</a></div>`;
+                        } else if (record.plan_title) {
+                            recordElement.innerHTML = `<div class="bubble"><a href="/record/plan/${record.id}">${record.plan_title}</a></div>`;
+                        }
+
+                        ulElement.appendChild(recordElement);
+                        
+                         
+
+                    });
+                }
+            }
+        }
+        })
+        .catch(error => {
+            console.error('検索エラー:', error);
+        });
+});
 
     </script>
 </body>

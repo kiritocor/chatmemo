@@ -180,6 +180,10 @@
             padding: 5px;
             width: 100%;
         }
+        a{
+            text-decoration: none;
+            color: black;
+        }
     </style>
 </head>
 
