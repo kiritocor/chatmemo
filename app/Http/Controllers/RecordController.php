@@ -59,6 +59,9 @@ class RecordController extends Controller
     
     public function filterByImportance(Request $request)
 {
+    
+    $user = Auth::user();
+    
     $importance = $request->input('importance'); // 重要度セレクトメニューからの選択
 
     $filteredData = []; // 重要度に合致するデータを格納するための配列
@@ -67,26 +70,26 @@ class RecordController extends Controller
 
     if ($importance === 'yes') {
         // Yes の場合、"important" カラムが "はい" のデータを取得
-        $memoData = Memo::where('important', 'はい')->get();
-        $todolistData = Todolist::where('important', 'はい')->get();
-        $thinkData = Think::where('important', 'はい')->get();
-        $planData = Plan::get();
+        $memoData = Memo::where('user_id', $user->id)->where('important', 'はい')->get();
+        $todolistData = Todolist::where('user_id', $user->id)->where('important', 'はい')->get();
+        $thinkData = Think::where('user_id', $user->id)->where('important', 'はい')->get();
+        $planData = Plan::where('user_id', $user->id)->get();
         
         $formattedData = $planData->concat($memoData)->concat($todolistData)->concat($thinkData);
         
     } else if($importance === 'no'){
         // No の場合、"important" カラムが "はい" のデータを除外して取得
-        $memoData = Memo::where('important', '!=', 'はい')->get();
-        $todolistData = Todolist::where('important', '!=', 'はい')->get();
-        $thinkData = Think::where('important', '!=', 'はい')->get();
+        $memoData = Memo::where('user_id', $user->id)->where('important', '!=', 'はい')->get();
+        $todolistData = Todolist::where('user_id', $user->id)->where('important', '!=', 'はい')->get();
+        $thinkData = Think::where('user_id', $user->id)->where('important', '!=', 'はい')->get();
         
         $formattedData = $memoData->concat($todolistData)->concat($thinkData);
         
     } else if($importance === 'all'){
-        $planData = Plan::get();
-        $memoData = Memo::get();
-        $todolistData = Todolist::get();
-        $thinkData = Think::get();
+        $planData = Plan::where('user_id', $user->id)->get();
+        $memoData = Memo::where('user_id', $user->id)->get();
+        $todolistData = Todolist::where('user_id', $user->id)->get();
+        $thinkData = Think::where('user_id', $user->id)->get();
         
         $formattedData = $planData->concat($memoData)->concat($todolistData)->concat($thinkData);
     }
@@ -112,6 +115,8 @@ class RecordController extends Controller
     
     public function filterByCategory(Request $request)
 {
+    $user = Auth::user();
+    
     $category = $request->input('category'); // 重要度セレクトメニューからの選択
 
     $filteredData = []; // 重要度に合致するデータを格納するための配列
@@ -120,33 +125,33 @@ class RecordController extends Controller
 
     if ($category === 'memo') {
         
-        $memoData = Memo::get();
+        $memoData = Memo::where('user_id', $user->id)->get();
         
         $formattedData = $memoData;
         
     } else if($category === 'plan'){
         
-        $planData = Plan::get();
+        $planData = Plan::where('user_id', $user->id)->get();
         
         $formattedData = $planData;
         
     } else if($category === 'todo'){
         
-        $todolistData = Todolist::get();
+        $todolistData = Todolist::where('user_id', $user->id)->get();
         
         $formattedData = $todolistData;
         
     } else if($category === 'think'){
         
-        $thinkData = Think::get();
+        $thinkData = Think::where('user_id', $user->id)->get();
     
         $formattedData = $thinkData;
         
     } else if($category === 'all'){
-        $planData = Plan::get();
-        $memoData = Memo::get();
-        $todolistData = Todolist::get();
-        $thinkData = Think::get();
+        $planData = Plan::where('user_id', $user->id)->get();
+        $memoData = Memo::where('user_id', $user->id)->get();
+        $todolistData = Todolist::where('user_id', $user->id)->get();
+        $thinkData = Think::where('user_id', $user->id)->get();
         
         $formattedData = $planData->concat($memoData)->concat($todolistData)->concat($thinkData);
     }
@@ -169,6 +174,37 @@ class RecordController extends Controller
 
     // 重要度に合致するデータをJSON レスポンスとして返す
     }
+    
+    public function search(Request $request)
+{
+    $query = $request->input('query');
+    
+    $user = Auth::user();
+    
+    // データベースから予測結果を取得
+$thinkResults = Think::where('user_id', $user->id)->where('think_title', 'like', '%' . $query . '%')->limit(10)->get();
+$memoResults = Memo::where('user_id', $user->id)->where('memo_title', 'like', '%' . $query . '%')->limit(10)->get();
+$todolistResults = Todolist::where('user_id', $user->id)->where('todo_title', 'like', '%' . $query . '%')->limit(10)->get();
+$planResults = Plan::where('user_id', $user->id)->where('plan_title', 'like', '%' . $query . '%')->limit(10)->get();
+
+$results = $thinkResults->concat($memoResults)->concat($todolistResults)->concat($planResults);
+
+$sortedData = $results->sortBy('created_at');
+
+$searchData = $sortedData->groupBy(function ($item) {
+            return $item->created_at->format('Y');
+        })->map(function ($yearItems) {
+            return $yearItems->groupBy(function ($item) {
+                return $item->created_at->format('m月');
+            })->map(function ($monthYearItems) {
+                return $monthYearItems->groupBy(function ($item) {
+                    return $item->created_at->format('d日');
+                });
+            });
+        });
+
+    return response()->json($searchData);
+}
 
     public function memoEdit(Memo $memo)
     {

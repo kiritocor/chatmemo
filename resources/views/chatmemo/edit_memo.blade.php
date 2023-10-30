@@ -156,6 +156,10 @@
             justify-content: space-between;
             align-items: center;
         }
+        a{
+            text-decoration: none;
+            color: black;
+        }
     </style>
 </head>
 <body>
