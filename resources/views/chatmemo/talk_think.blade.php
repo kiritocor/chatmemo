@@ -265,8 +265,8 @@ function sendMessage() {
         chatContainer.appendChild(messageDiv);
         currentIndex++;
     }
-    
-    if (pendingMessages.length === 4 ){
+    console.log(pendingMessages.length)
+    if (pendingMessages.length === 3 ){
     // メッセージフィールドを非表示にする
     messageInput.style.display = "none";
 

@@ -82,6 +82,7 @@ $date = \Carbon\Carbon::create($year, $month, $day, $hour, $minute);
     $plan->w_think = $data['question5'];
     $plan->plan_detail = $data['question6'];
     $plan->tag_id = 3;
+    $plan->sorve = 'unsorve';
     $plan->save();
 
     
@@ -137,6 +138,7 @@ $date = \Carbon\Carbon::create($year, $month, $day, $hour, $minute);
     $todo->important = $data['question4'];
     $todo->w_think = $data['question5'];
     $todo->tag_id = 2;
+    $todo->sorve = 'unsorve';
     $todo->save();
 
     

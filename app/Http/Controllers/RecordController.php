@@ -9,6 +9,8 @@ use App\Models\Think;
 use App\Models\Memo;
 use App\Models\Todolist;
 use App\Models\Plan;
+use App\Models\Tag;
+use App\Models\TagPost;
 use DateTime;
 
 class RecordController extends Controller
@@ -20,19 +22,19 @@ class RecordController extends Controller
 
         // 4つのモデルからデータを取得し、unionで結合
         // 各モデルごとにデータを取得
-        $thinkData = Think::select('created_at', 'important', 'think_title as title', 'id', 'user_id', 'created_at as date')
+        $thinkData = Think::select('created_at', 'important', 'think_title as title', 'id', 'user_id', 'created_at as date', 'tag_id')
             ->where('user_id', $user->id)
             ->get();
 
-        $memoData = Memo::select('created_at', 'important', 'memo_title as title', 'id', 'user_id', 'created_at as date')
+        $memoData = Memo::select('created_at', 'important', 'memo_title as title', 'id', 'user_id', 'created_at as date', 'tag_id')
             ->where('user_id', $user->id)
             ->get();
 
-        $todolistData = Todolist::select('created_at', 'important', 'todo_title as title', 'id', 'user_id', 'created_at as date')
+        $todolistData = Todolist::select('created_at', 'important', 'todo_title as title', 'id', 'user_id', 'created_at as date', 'tag_id')
             ->where('user_id', $user->id)
             ->get();
 
-        $planData = Plan::select('created_at', 'plan_title as title', 'id', 'user_id', 'created_at as date')
+        $planData = Plan::select('created_at', 'plan_title as title', 'id', 'user_id', 'created_at as date', 'tag_id')
             ->where('user_id', $user->id)
             ->get();
 
@@ -53,9 +55,58 @@ class RecordController extends Controller
                 });
             });
         });
+        
+        $tagData = Tag::where('user_id', $user->id)->get();
 
-        return view('chatmemo.record')->with(['groupedData'=>$groupedData]);
+        return view('chatmemo.record')->with(['groupedData'=>$groupedData, 'tagData'=>$tagData]);
     }
+    
+    public function savetag(Request $request,Tag $tag)
+{
+    $data = $request->json()->all();
+    $user = Auth::user();
+    // Memoモデルにデータを保存
+    
+    foreach ($data['messages'] as $message) {
+    $tag = new Tag;
+    $tag->user_id = $user->id;
+    $tag->name = $message;
+    $tag->save();
+    }
+    return response()->json(['message' => 'Message saved successfully']);
+}
+    
+    public function attachTagToPost(Request $request) 
+{
+    $user = Auth::user();
+    
+    $recordId = $request->input('recordId');
+    $tagId = $request->input('tagId');
+    $filterId = $request->input('filterId');
+
+    // 中間テーブルにデータを保存する処理を実装
+    
+    $tagPost = new TagPost;
+    $tagPost->user_id = $user->id;
+    $tagPost->record_id = $recordId;
+    $tagPost->tag_id = $tagId;
+    $tagPost->record_type = $filterId;
+    $tagPost->save();
+
+    return response()->json(['success' => true]);
+}
+
+public function deleteTagPost($id) {
+    // $id を使用して該当の投稿を削除する処理を実装
+    $tagPost = TagPost::find($id);
+    if (!$tagPost) {
+        return response()->json(['success' => false]);
+    }
+    
+    $tagPost->delete();
+    
+    return response()->json(['success' => true]);
+}
     
     public function filterByImportance(Request $request)
 {
@@ -248,4 +299,6 @@ $searchData = $sortedData->groupBy(function ($item) {
         
         return view('chatmemo.edit_think')->with(['think' => $think, 'url' => $url]);
     }
+    
+    
 }

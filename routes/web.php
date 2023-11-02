@@ -55,6 +55,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/record/memo/{memo}', [RecordController::class ,'memoEdit']);
     Route::get('/record/plan/{plan}', [RecordController::class ,'planEdit']);
     Route::get('/record/todo/{todo}', [RecordController::class ,'todoEdit']);
+    Route::post('/record/tag/save', [RecordController::class ,'savetag']);
+    Route::post('/attach-tag-to-post', [RecordController::class ,'attachTagToPost']);
+    Route::delete('/delete-tagpost/{id}', [RecordController::class, 'deleteTagPost']);
     Route::get('/search', [RecordController::class ,'search']);
     Route::get('/chatmemo', [ChatmemoController::class, 'top']);
     Route::post('/updateSorve', [ChatmemoController::class, 'updateSorve']);

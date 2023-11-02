@@ -354,7 +354,7 @@ function sendMessage() {
      hourSelect.style.display = "block"
      minuteSelect.style.display = "block"
      savedate.style.display = "block"
-     circlenobutton.style.display = "block"
+     //circlenobutton.style.display = "block"
 }
     
 

@@ -5,11 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Top</title>
     <style>
+    /* サイドメニューバーのスタイル */
+        .side-menu {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #f0f0f0;
+            padding-top: 60px;
+        }
+
+        .menu-list-item {
+            padding: 30px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .menu-list-item:hover {
+            color: black;
+        }
+
+        /* コンテンツエリアのスタイル */
+        .content {
+            margin-left: 250px; /* サイドメニューの幅と合わせる */
+            padding: 0px;
+        }
+        /* カレンダーのスタイル */
+        .calendar {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        table {
+            width: 100%;
+            font-size: 18px; /* フォントサイズを大きくする */
+        }
+
+        table th, table td {
+            text-align: center;
+            padding: 10px; /* セルの内側の余白を調整 */
+            position: relative; /* 相対位置指定 */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            cursor: pointer;
+        }
+        
+        /* メモ表示用のスタイル */
+        .memo-dialog {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            z-index: 1; /* ダイアログを前面に表示 */
+        }
+    
         /* 全体のコンテナ */
         .container {
             display: flex;
             flex-direction: column;
-            height: 100vh; /* 画面の高さいっぱいに表示 */
+            height: 200vh; /* 画面の高さいっぱいに表示 */
         }
 
         /* 上部セクション */
@@ -18,7 +84,7 @@
             padding: 10px;
             position: sticky;
             top: 0;
-            z-index: 2; /* 他の要素の上に表示 */
+            z-index: 3; /* 他の要素の上に表示 */
         }
 
           /* 区切り線スタイル */
@@ -30,11 +96,11 @@
         /* 中央セクション */
         .middle {
             flex-grow: 1; /* 空きスペースを埋める */
-            overflow-y: scroll; /* 縦スクロールを有効にする */
+             /*overflow-y: scroll;  縦スクロールを有効にする */
             padding: 10px;
             display: flex;
             flex-direction: row;
-            flex: 2;
+            flex: 3;
             display: flex;
             justify-content: space-between;
         }
@@ -134,6 +200,7 @@
         }
         /* 吹き出し設定 */
         .rectangle-accordion-left {
+            
             display: flex;
             flex-direction: column;
             width: 300px;
@@ -141,6 +208,13 @@
         }
         
         .rectangle-accordion-right {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            flex: 1;
+        }
+        
+        .rectangle-accordion-calendar {
             display: flex;
             flex-direction: column;
             width: 300px;
@@ -236,6 +310,19 @@
     </style>
 </head>
 <body>
+    <!-- サイドメニューバー -->
+    <div class="side-menu">
+        <ul class="menu-list">
+            <div class="menu-list-item">直近のメモ</div>
+            <div class="menu-list-item">未解決の予定</div>
+            <div class="menu-list-item">カレンダー</div>
+            <a class="menu-list-item" href="/qpage">会話</a>
+            <a class="menu-list-item" href="/record">記録</a>
+            <!-- 必要なメニュー項目を追加 -->
+       
+        </ul>
+    </div>
+    <div class="content">
     <div class="container">
         <div class="top">
             <!-- 現在の年、月、日、曜日を表示 -->
@@ -245,8 +332,8 @@
         <div class="middle">
             <!-- ここにスクロール可能なコンテンツを配置 -->
             
-            <div id="rectangle-accordion-left">
-                
+            <div id="rectangle-accordion-left" class="rectangle-accordion-left">
+                <h2>直近のメモ・出来事・考えたこと</h2>
                 <div class="accordion-item">
                     <div class="accordion-title">直近のメモ</div>
                     <div class="accordion-text">
@@ -344,7 +431,8 @@
                     </div>
                 </div>
             </div> 
-            <div id="rectangle-accordion-right">
+            <div id="rectangle-accordion-right" class="rectangle-accordion-right">
+                <h2>予定・やるべきこと</h2>
                 <div class="select-sorve" id="selectsolve">
                     <div class="bubble" id="unsorvechange">未解決</div>
                         <div class="bubble" id="sorvechange">解決</div>
@@ -390,26 +478,106 @@
                 </div>
                 </div>
             </div>
-            <!-- 繰り返しコンテンツを追加してスクロール可能に -->
-        </div>
-        <div class="divider"></div>
-        <div class="bottom">
-            <!-- 左側のボタン -->
-            <a button class="circle-button" href="/qpage">会話</a>
-            </button>
-            <!-- 右側のボタン -->
-            <a button class="circle-button" href="/record">記録</a>
-            </button>
-        </div>
+            <div class="retangle-accordion-calendar">
+            <div class="calendar">
+        <h2>カレンダー</h2>
+        <h3 id="calenderoptions"></h3>
+        <table id="calendarTable">
+            <thead>
+                <tr>
+                    <th>日</th>
+                    <th>月</th>
+                    <th>火</th>
+                    <th>水</th>
+                    <th>木</th>
+                    <th>金</th>
+                    <th>土</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- カレンダーの日付セルはここに生成されます -->
+            </tbody>
+        </table>
     </div>
+    </div>
+            <!-- 繰り返しコンテンツを追加してスクロール可能に -->
+    <!--    </div>-->
+    <!--    <div class="divider"></div>-->
+    <!--    <div class="bottom">-->
+            <!-- 左側のボタン -->
+    <!--        <a button class="circle-button" href="/qpage">会話</a>-->
+    <!--        </button>-->
+            <!-- 右側のボタン -->
+    <!--        <a button class="circle-button" href="/record">記録</a>-->
+    <!--        </button>-->
+    <!--    </div>-->
+    <!--</div>-->
+    <!--</div>-->
     
     <!-- JavaScriptで現在の年、月、日、曜日を表示 -->
     <script>
-        const dateElement = document.getElementById('date');
+    // カレンダーを生成する関数
+        function generateCalendar(year, month) {
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+
+            const tableBody = document.querySelector("#calendarTable tbody");
+            tableBody.innerHTML = "";
+
+            let date = new Date(firstDay);
+            while (date <= lastDay) {
+                const newRow = document.createElement("tr");
+
+                for (let i = 0; i < 7; i++) {
+                    if (date.getDay() === i) {
+                        const newCell = document.createElement("td");
+                        newCell.textContent = date.getDate();
+                        newCell.addEventListener("click", (event) => {
+                            // クリック時にメモを表示するダイアログを表示
+                            const memoDialog = document.createElement("div");
+                            memoDialog.className = "memo-dialog";
+                            memoDialog.textContent = "ここにメモを表示";
+
+                            // ダイアログを閉じるボタンを追加
+                            const closeButton = document.createElement("button");
+                            closeButton.textContent = "閉じる";
+                            closeButton.addEventListener("click", () => {
+                                memoDialog.style.display = "none";
+                            });
+                            memoDialog.appendChild(closeButton);
+
+                            // カレンダーセルの位置にダイアログを配置
+                            const cellRect = newCell.getBoundingClientRect();
+                            memoDialog.style.left = cellRect.left + "px";
+                            memoDialog.style.top = cellRect.bottom + "px";
+
+                            document.body.appendChild(memoDialog);
+                        });
+                        newRow.appendChild(newCell);
+
+                        date.setDate(date.getDate() + 1);
+                    } else {
+                        const newCell = document.createElement("td");
+                        newRow.appendChild(newCell);
+                    }
+                }
+
+                tableBody.appendChild(newRow);
+            }
+        }
+
+        // カレンダーを初期表示
         const currentDate = new Date();
+        generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        
+        const dateElement = document.getElementById('date');
+        
+        const calenderElement = document.getElementById('calenderoptions');
     
         const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+        const calenderoptions = { year: 'numeric', month: 'long' };
         dateElement.textContent = currentDate.toLocaleDateString('ja-US', options);
+        calenderElement.textContent = currentDate.toLocaleDateString('ja-US', calenderoptions);
 
      // JavaScriptでクリックで展開/折りたたむ動作を実装
         
@@ -462,6 +630,7 @@ Plancontainer.addEventListener('click', (e) => {
                 if (response.success) {
                     // データが正常に更新された場合の処理
                     // ここでUIを更新するなどの処理を行うことができます
+                    alert("解決！");
                 }
             } else {
                 // エラー時の処理
@@ -476,7 +645,7 @@ Plancontainer.addEventListener('click', (e) => {
     });
 });
 
-// 解決ボタンがクリックされたときの処理
+// 未解決ボタンがクリックされたときの処理
     document.querySelectorAll('.unsorve-button').forEach(function(element) {
     element.addEventListener('click', function() {
         var recordId = this.getAttribute('data-record-id');
@@ -492,6 +661,7 @@ Plancontainer.addEventListener('click', (e) => {
                 if (response.success) {
                     // データが正常に更新された場合の処理
                     // ここでUIを更新するなどの処理を行うことができます
+                    alert("未解決！");
                 }
             } else {
                 // エラー時の処理
@@ -577,7 +747,7 @@ function renderData(newData){
     todoHtml += '<div class="title-bubble">' + todoData.title + '</div>';
     todoHtml += '<div class="plan-text">';
     todoHtml += '<div class="bubble"><a href="/record/todo/' + todoData.id + '">詳細</a></div>';
-    todoHtml += '<div class="sorve-button" tag-id="3" data-record-id="' + todoData.id + '">未解決！</div>';
+    todoHtml += '<div class="sorve-button" tag-id="2" data-record-id="' + todoData.id + '">解決！</div>';
     todoHtml += '</div>';
     todoHtml += '</div>';
     todoHtml += '<div class="bubble">' + formattedWhenTodo + 'までに</div>';

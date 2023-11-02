@@ -12,7 +12,7 @@ class Memo extends Model
     
      protected $table = 'memos';
      protected $guarded = [];
-     
+     protected $recordType = '4';
      protected $fillable = [
     'id',
     'memo_title',
@@ -27,7 +27,9 @@ class Memo extends Model
     }
     public function tags()
     {
-        return $this->belongsTo(Tag::class, 'tag_id');
+        return $this->belongsToMany(Tag::class, 'tag_posts', 'record_id', 'tag_id')
+        ->where('record_type', $this->recordType)
+        ->withPivot('id');
     }
     public function photo()   
 {
