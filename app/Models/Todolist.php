@@ -11,6 +11,15 @@ class Todolist extends Model
     
      protected $table = 'todolists';
      protected $guarded = [];
+     protected $recordType = '2';
+     protected $fillable = [
+    'id',
+    'when_todo',
+    'todo_title',
+    'about',
+    'important',
+    'w_think'
+];
 
     public function user()
     {
@@ -19,6 +28,11 @@ class Todolist extends Model
     public function photo()   
 {
     return $this->hasOne(Photo::class);  
+}
+public function tags() {
+    return $this->belongsToMany(Tag::class, 'tag_posts', 'record_id', 'tag_id')
+        ->where('record_type', $this->recordType)
+        ->withPivot('id');
 }
     public function link()   
 {

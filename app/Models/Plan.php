@@ -12,13 +12,14 @@ class Plan extends Model
     
      protected $table = 'plans';
      protected $guarded = [];
-     
+     protected $recordType = '3';
      protected $fillable = [
     'id',
     'plan_title',
     'where',
     'plan_detail',
     'w_think',
+    'when_plan'
 ];
      
     public function users()
@@ -27,7 +28,9 @@ class Plan extends Model
     }
     public function tags()
     {
-        return $this->belongsTo(Tag::class, 'tag_id');
+       return $this->belongsToMany(Tag::class, 'tag_posts', 'record_id', 'tag_id')
+        ->where('record_type', $this->recordType)
+        ->withPivot('id');
     }
     public function photo()   
 {

@@ -358,7 +358,7 @@ if (pendingMessages.length === 5 ){
     document.querySelectorAll("label, select, button#savedate").forEach(element => {
             element.style.display = "block";
         });
-     circlenobutton.style.display = "block";
+     //circlenobutton.style.display = "block";
 }
 
     // 左揃えのメッセージが６回入力されたら確定ボタンを表示

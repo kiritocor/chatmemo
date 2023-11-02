@@ -11,16 +11,30 @@ class Think extends Model
     
      protected $table = 'thinks';
      protected $guarded = [];
+     protected $recordType = '1';
+     protected $fillable = [
+    'id',
+    'think_title',
+    'when',
+    'important',
+    'about',
+    'w_think'
+];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-    public function photo()   
+    public function photo()
 {
     return $this->hasOne(Photo::class);  
 }
-    public function link()   
+public function tags() {
+    return $this->belongsToMany(Tag::class, 'tag_posts', 'record_id', 'tag_id')
+        ->where('record_type', $this->recordType)
+        ->withPivot('id');
+}
+    public function link()
 {
     return $this->hasOne(Link::class);  
 }

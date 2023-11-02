@@ -389,7 +389,7 @@ circlenobutton.addEventListener("click", function () {
      document.querySelectorAll("label, select, button#savedate").forEach(element => {
             element.style.display = "block";
         });
-     circledatenobutton.style.display = "block"
+      //circledatenobutton.style.display = "none"
      
       savedate.addEventListener("click", function () {
         // はいボタンがクリックされた場合の処理

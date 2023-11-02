@@ -14,8 +14,4 @@ class Tag extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
     
-    public function memos()   
-{
-    return $this->hasOne(Memo::class);  
-}
 }
