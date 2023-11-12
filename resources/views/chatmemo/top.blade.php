@@ -60,17 +60,33 @@
         td {
             cursor: pointer;
         }
-        
-        /* メモ表示用のスタイル */
-        .memo-dialog {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            padding: 10px;
-            z-index: 1; /* ダイアログを前面に表示 */
+        .current-date {
+            width: 45px;
+            height: 30px;
+            background-color: #f0f0f0;
+            color: #007bff;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
         }
-    
+        .clickable{
+            width: 45px;
+            height: 30px;
+            background-color: #f0f0f0;
+            color: #818181;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+        }
+        
+        .clickable:hover {
+            background-color: #ddd;
+        }
+        
+        .current-date:hover {
+            background-color: #ddd;
+        }
+          
         /* 全体のコンテナ */
         .container {
             display: flex;
@@ -199,12 +215,15 @@
             background-color: #ddd;
         }
         /* 吹き出し設定 */
-        .rectangle-accordion-left {
+        #rectangle-accordion-left {
             
             display: flex;
             flex-direction: column;
             width: 300px;
             flex: 1;
+            flex-shrink: 0; /* 幅が固定で、横にスクロールしないように */
+    margin-right: 10px; /* 右側に隣接要素との間隔を設定 */
+    padding: 10px;
         }
         
         .rectangle-accordion-right {
@@ -242,7 +261,7 @@
         }
 
         .accordion-text {
-            width: 300px;
+            width: 100%;
             display: none;
             padding: 10px;
             background-color: white;
@@ -290,7 +309,7 @@
         .left {
             flex: 1;
         }
-
+          
         .right {
             flex: 1;
         }
@@ -313,9 +332,9 @@
     <!-- サイドメニューバー -->
     <div class="side-menu">
         <ul class="menu-list">
-            <div class="menu-list-item">直近のメモ</div>
-            <div class="menu-list-item">未解決の予定</div>
-            <div class="menu-list-item">カレンダー</div>
+            <div class="menu-list-item" id="memo-toggle">直近のメモ</div>
+            <div class="menu-list-item" id="unresolved-plans-link">未解決の予定</div>
+            <div class="menu-list-item" id="calendar-toggle">カレンダー</div>
             <a class="menu-list-item" href="/qpage">会話</a>
             <a class="menu-list-item" href="/record">記録</a>
             <!-- 必要なメニュー項目を追加 -->
@@ -478,7 +497,8 @@
                 </div>
                 </div>
             </div>
-            <div class="retangle-accordion-calendar">
+            
+            <div class="rectangle-accordion-calendar" id="rectangle-accordion-calendar">
             <div class="calendar">
         <h2>カレンダー</h2>
         <h3 id="calenderoptions"></h3>
@@ -498,73 +518,101 @@
                 <!-- カレンダーの日付セルはここに生成されます -->
             </tbody>
         </table>
+             <div id="memo-display" class="memo-dialog"></div>
+    </div>
+    </div>
+    </div>
     </div>
     </div>
             <!-- 繰り返しコンテンツを追加してスクロール可能に -->
-    <!--    </div>-->
-    <!--    <div class="divider"></div>-->
-    <!--    <div class="bottom">-->
-            <!-- 左側のボタン -->
-    <!--        <a button class="circle-button" href="/qpage">会話</a>-->
-    <!--        </button>-->
-            <!-- 右側のボタン -->
-    <!--        <a button class="circle-button" href="/record">記録</a>-->
-    <!--        </button>-->
-    <!--    </div>-->
-    <!--</div>-->
-    <!--</div>-->
-    
+        
     <!-- JavaScriptで現在の年、月、日、曜日を表示 -->
     <script>
-    // カレンダーを生成する関数
-        function generateCalendar(year, month) {
-            const firstDay = new Date(year, month, 1);
-            const lastDay = new Date(year, month + 1, 0);
+ const memoData = {};
+ 
 
-            const tableBody = document.querySelector("#calendarTable tbody");
-            tableBody.innerHTML = "";
+    function generateCalendar(year, month) {
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
 
-            let date = new Date(firstDay);
-            while (date <= lastDay) {
-                const newRow = document.createElement("tr");
+    
 
-                for (let i = 0; i < 7; i++) {
-                    if (date.getDay() === i) {
-                        const newCell = document.createElement("td");
-                        newCell.textContent = date.getDate();
-                        newCell.addEventListener("click", (event) => {
-                            // クリック時にメモを表示するダイアログを表示
-                            const memoDialog = document.createElement("div");
-                            memoDialog.className = "memo-dialog";
-                            memoDialog.textContent = "ここにメモを表示";
+    const tableBody = document.querySelector("#calendarTable tbody");
+    tableBody.innerHTML = "";
 
-                            // ダイアログを閉じるボタンを追加
-                            const closeButton = document.createElement("button");
-                            closeButton.textContent = "閉じる";
-                            closeButton.addEventListener("click", () => {
-                                memoDialog.style.display = "none";
-                            });
-                            memoDialog.appendChild(closeButton);
+    let date = new Date(firstDay);
+    while (date <= lastDay) {
+        const newRow = document.createElement("tr");
 
-                            // カレンダーセルの位置にダイアログを配置
-                            const cellRect = newCell.getBoundingClientRect();
-                            memoDialog.style.left = cellRect.left + "px";
-                            memoDialog.style.top = cellRect.bottom + "px";
-
-                            document.body.appendChild(memoDialog);
-                        });
-                        newRow.appendChild(newCell);
-
-                        date.setDate(date.getDate() + 1);
-                    } else {
-                        const newCell = document.createElement("td");
-                        newRow.appendChild(newCell);
+        for (let i = 0; i < 7; i++) {
+            if (date.getDay() === i) {
+                const newCell = document.createElement("td");
+                const day = date.getDate();
+                const formattedDay = day < 10 ? `0${day}` : day.toString();
+                const formattedDate = `${year}-${month + 1}-${formattedDay}`;
+                newCell.textContent = day;
+                
+                 // サーバーにAJAXリクエストを送信してデータを取得
+                fetch('/fetchDateData', {
+                    method: 'POST',
+                    body: JSON.stringify({ date: formattedDate }),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // サーバーから取得したデータがある場合はスタイルを変更
+                    if (data.length > 0) {
+                        newCell.classList.add("current-date");
+                        }
+                    })
+                
+                if (
+                    date.getDate() === currentDate.getDate() &&
+                    date.getMonth() === currentDate.getMonth() &&
+                    date.getFullYear() === currentDate.getFullYear()
+                ) {
+                    newCell.classList.add("current-date"); // 現在の日に対応する日付セルにクラスを追加
+                }else{
+                    newCell.classList.add("clickable");
                 }
+                newRow.appendChild(newCell);
 
-                tableBody.appendChild(newRow);
+                newCell.addEventListener("click", () => {
+    const formattedDate = `${year}-${month + 1}-${formattedDay}`;
+    
+    // サーバーにAJAXリクエストを送信
+    fetch('/fetchDateData', {
+        method: 'POST',
+        body: JSON.stringify({ date: formattedDate }),
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}', // LaravelのCSRFトークンを設定
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        const memoDisplay = document.getElementById("memo-display");
+        if (data.length > 0) {
+        memoDisplay.textContent = data.join(', ');
+        } else {
+            memoDisplay.textContent = "メモはありません";
+        }
+    });
+});
+newRow.appendChild(newCell);
+                date.setDate(date.getDate() + 1);
+            } else {
+                const newCell = document.createElement("td");
+                newRow.appendChild(newCell);
             }
         }
+
+        tableBody.appendChild(newRow);
+    }
+}
 
         // カレンダーを初期表示
         const currentDate = new Date();
@@ -612,6 +660,44 @@ Plancontainer.addEventListener('click', (e) => {
     if (target.classList.contains('accordion-title')) {
         target.parentElement.classList.toggle('active'); // クリックした吹き出しの状態を切り替える
     }
+});
+
+const unresolvedPlansLink = document.getElementById("unresolved-plans-link");
+
+// クリックイベントを設定
+unresolvedPlansLink.addEventListener("click", () => {
+  // rectangle-accordion-right要素の表示/非表示を切り替え
+  if (rectangleaccordionright.style.display === "none") {
+    rectangleaccordionright.style.display = "block";
+  } else {
+    rectangleaccordionright.style.display = "none";
+  }
+});
+
+const calendartoggle = document.getElementById("calendar-toggle");
+const rectangleaccordioncalendar = document.getElementById('rectangle-accordion-calendar');
+
+// クリックイベントを設定
+calendartoggle.addEventListener("click", () => {
+  //表示/非表示を切り替え
+  if (rectangleaccordioncalendar.style.display === "none") {
+    rectangleaccordioncalendar.style.display = "block";
+  } else {
+    rectangleaccordioncalendar.style.display = "none";
+  }
+});
+
+const memotoggle = document.getElementById("memo-toggle");
+
+
+// クリックイベントを設定
+memotoggle.addEventListener("click", () => {
+  //表示/非表示を切り替え
+  if (rectangleaccordionleft.style.display === "none") {
+    rectangleaccordionleft.style.display = "block";
+  } else {
+    rectangleaccordionleft.style.display = "none";
+  }
 });
 
 // 解決ボタンがクリックされたときの処理

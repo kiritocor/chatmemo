@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/delete-tagpost/{id}', [RecordController::class, 'deleteTagPost']);
     Route::get('/search', [RecordController::class ,'search']);
     Route::get('/chatmemo', [ChatmemoController::class, 'top']);
+    Route::post('/fetchDateData', [ChatmemoController::class, 'fetchDateData']);
     Route::post('/updateSorve', [ChatmemoController::class, 'updateSorve']);
     Route::post('/updateunSorve', [ChatmemoController::class, 'updateunSorve']);
     Route::post('/filter-by-unsorve', [ChatmemoController::class ,'filterByunSorve']);
