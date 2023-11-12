@@ -94,7 +94,19 @@ class ChatmemoController extends Controller
             'sortedwhenplanData'=>$sortedwhenplanData, 
             'sortedwhentodoData'=>$sortedwhentodoData
             ]);
+            
 }
+
+public function fetchDateData(Request $request)
+    {
+        $date = $request->input('date');
+
+        $planData = Plan::whereDate('when_plan', '=', $date)->pluck('plan_title')->toArray();
+        $todoData = Todolist::whereDate('when_todo', '=', $date)->pluck('todo_title')->toArray();
+        $response = array_merge($planData, $todoData);
+
+        return response()->json($response);
+    }
 
 public function updateSorve(Request $request) {
     
