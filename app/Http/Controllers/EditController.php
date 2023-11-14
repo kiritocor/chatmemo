@@ -201,4 +201,52 @@ $date = \Carbon\Carbon::create($year, $month, $day, $hour, $minute);
     return response()->json(['message' => 'メモが更新されました'], 200);
 }
 
+public function deleteMemo($id) {
+    // $id を使用して該当の投稿を削除する処理を実装
+    $deletepost = Memo::find($id);
+    if (!$deletepost) {
+        return response()->json(['success' => false]);
+    }
+    
+    $deletepost->delete();
+    
+    return response()->json(['success' => true]);
+}
+
+public function deletePlan($id) {
+    // $id を使用して該当の投稿を削除する処理を実装
+    $deletepost = Plan::find($id);
+    if (!$deletepost) {
+        return response()->json(['success' => false]);
+    }
+    
+    $deletepost->delete();
+    
+    return response()->json(['success' => true]);
+}
+
+public function deleteTodo($id) {
+    // $id を使用して該当の投稿を削除する処理を実装
+    $deletepost = Todolist::find($id);
+    if (!$deletepost) {
+        return response()->json(['success' => false]);
+    }
+    
+    $deletepost->delete();
+    
+    return response()->json(['success' => true]);
+}
+
+public function deleteThink($id) {
+    // $id を使用して該当の投稿を削除する処理を実装
+    $deletepost = Think::find($id);
+    if (!$deletepost) {
+        return response()->json(['success' => false]);
+    }
+    
+    $deletepost->delete();
+    
+    return response()->json(['success' => true]);
+}
+
 }

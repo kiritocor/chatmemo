@@ -858,6 +858,7 @@ function attachTagToPost(recordId, tagId, filterId) {
         // サーバーサイドからのレスポンスを処理
         if (data.success) {
             // 成功時の処理を追加
+            alert('タグを削除しました');
            bubbleElement.style.display = 'none'; // バブルを非表示
         } else {
             // 失敗時の処理を追加

@@ -45,6 +45,26 @@
         .circle-button:hover {
             background-color: #ddd;
         }
+        .delete-button {
+            width: 45px;
+            height: 45px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .delete-button:hover {
+            background-color: #ddd;
+        }
         .edit-button {
             width: 45px;
             height: 45px;
@@ -168,6 +188,7 @@
             <!-- 上部 -->
             <a class="circle-button" href="/record">戻る</a>
             <p>{{ $todo->created_at }}</p>
+            <a class="delete-button" post-id="{{ $todo->id }}">削除</a>
         </div>
         <div class="divider"></div>
         <div class="middle"　id="chat-container">
@@ -504,6 +525,36 @@ sendButton.addEventListener("click", function (){
             alert(error.message);
         });
     }
+});
+
+document.querySelectorAll('.delete-button').forEach(function(bubbleElement) {
+    bubbleElement.addEventListener('click', function() {
+    const PostId = bubbleElement.getAttribute('post-id');
+    
+    // サーバーサイドにリクエストを送信
+    fetch(`/delete-todopost/${PostId}`, {
+        method: 'DELETE', // または適切な HTTP メソッドを選択
+         headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        // サーバーサイドからのレスポンスを処理
+        if (data.success) {
+            // 成功時の処理を追加
+            alert('メモを削除しました');
+            window.location.href = '/record';
+        } else {
+            // 失敗時の処理を追加
+            alert('削除に失敗しました');
+        }
+    })
+    .catch(error => {
+        console.error('エラー:', error);
+    });
+})
 });
 </script>
 </html>

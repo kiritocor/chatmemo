@@ -17,7 +17,7 @@ use App\Http\Controllers\EditController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (){
     return view('auth.login');
 });
 
@@ -58,6 +58,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/record/tag/save', [RecordController::class ,'savetag']);
     Route::post('/attach-tag-to-post', [RecordController::class ,'attachTagToPost']);
     Route::delete('/delete-tagpost/{id}', [RecordController::class, 'deleteTagPost']);
+    Route::delete('/delete-memopost/{id}', [EditController::class, 'deleteMemo']);
+    Route::delete('/delete-planpost/{id}', [EditController::class, 'deletePlan']);
+    Route::delete('/delete-todopost/{id}', [EditController::class, 'deleteTodo']);
+    Route::delete('/delete-thinkpost/{id}', [EditController::class, 'deleteThink']);
     Route::get('/search', [RecordController::class ,'search']);
     Route::get('/chatmemo', [ChatmemoController::class, 'top']);
     Route::post('/fetchDateData', [ChatmemoController::class, 'fetchDateData']);
