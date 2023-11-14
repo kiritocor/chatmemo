@@ -69,6 +69,15 @@
             border-radius: 50%;
             font-size: 20px;
         }
+        .point-date {
+            width: 45px;
+            height: 30px;
+            background-color: #f0f0f0;
+            color: red;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+        }
         .clickable{
             width: 45px;
             height: 30px;
@@ -528,31 +537,31 @@
         
     <!-- JavaScriptで現在の年、月、日、曜日を表示 -->
     <script>
- const memoData = {};
- 
+const memoData = {};
 
-    function generateCalendar(year, month) {
+function generateCalendar(year, month) {
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
-
-    
 
     const tableBody = document.querySelector("#calendarTable tbody");
     tableBody.innerHTML = "";
 
     let date = new Date(firstDay);
-    while (date <= lastDay) {
+    let isFirstMonth = true;
+
+    while (isFirstMonth || date.getDate() !== 1) {
         const newRow = document.createElement("tr");
 
         for (let i = 0; i < 7; i++) {
-            if (date.getDay() === i) {
-                const newCell = document.createElement("td");
+            const newCell = document.createElement("td");
+
+            if (date.getDay() === i && (isFirstMonth || date.getDate() !== 1)) {
                 const day = date.getDate();
                 const formattedDay = day < 10 ? `0${day}` : day.toString();
                 const formattedDate = `${year}-${month + 1}-${formattedDay}`;
                 newCell.textContent = day;
-                
-                 // サーバーにAJAXリクエストを送信してデータを取得
+
+                // サーバーにAJAXリクエストを送信してデータを取得
                 fetch('/fetchDateData', {
                     method: 'POST',
                     body: JSON.stringify({ date: formattedDate }),
@@ -565,52 +574,51 @@
                 .then(data => {
                     // サーバーから取得したデータがある場合はスタイルを変更
                     if (data.length > 0) {
-                        newCell.classList.add("current-date");
-                        }
-                    })
-                
+                        newCell.classList.add("point-date");
+                    }
+                });
+
                 if (
                     date.getDate() === currentDate.getDate() &&
                     date.getMonth() === currentDate.getMonth() &&
                     date.getFullYear() === currentDate.getFullYear()
                 ) {
                     newCell.classList.add("current-date"); // 現在の日に対応する日付セルにクラスを追加
-                }else{
-                    newCell.classList.add("clickable");
                 }
+
                 newRow.appendChild(newCell);
 
                 newCell.addEventListener("click", () => {
-    const formattedDate = `${year}-${month + 1}-${formattedDay}`;
-    
-    // サーバーにAJAXリクエストを送信
-    fetch('/fetchDateData', {
-        method: 'POST',
-        body: JSON.stringify({ date: formattedDate }),
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': '{{ csrf_token() }}', // LaravelのCSRFトークンを設定
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        const memoDisplay = document.getElementById("memo-display");
-        if (data.length > 0) {
-        memoDisplay.textContent = data.join(', ');
-        } else {
-            memoDisplay.textContent = "メモはありません";
-        }
-    });
-});
-newRow.appendChild(newCell);
+                    const formattedDate = `${year}-${month + 1}-${formattedDay}`;
+
+                    // サーバーにAJAXリクエストを送信
+                    fetch('/fetchDateData', {
+                        method: 'POST',
+                        body: JSON.stringify({ date: formattedDate }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}', // LaravelのCSRFトークンを設定
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const memoDisplay = document.getElementById("memo-display");
+                        if (data.length > 0) {
+                            memoDisplay.textContent = data.join(', ');
+                        } else {
+                            memoDisplay.textContent = "メモはありません";
+                        }
+                    });
+                });
+
                 date.setDate(date.getDate() + 1);
             } else {
-                const newCell = document.createElement("td");
                 newRow.appendChild(newCell);
             }
         }
 
         tableBody.appendChild(newRow);
+        isFirstMonth = false;
     }
 }
 
