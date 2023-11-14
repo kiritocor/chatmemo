@@ -99,10 +99,12 @@ class ChatmemoController extends Controller
 
 public function fetchDateData(Request $request)
     {
+        $user = Auth::user();
+        
         $date = $request->input('date');
 
-        $planData = Plan::whereDate('when_plan', '=', $date)->pluck('plan_title')->toArray();
-        $todoData = Todolist::whereDate('when_todo', '=', $date)->pluck('todo_title')->toArray();
+        $planData = Plan::whereDate('when_plan', '=', $date)->where('user_id', $user->id)->pluck('plan_title')->toArray();
+        $todoData = Todolist::whereDate('when_todo', '=', $date)->where('user_id', $user->id)->pluck('todo_title')->toArray();
         $response = array_merge($planData, $todoData);
 
         return response()->json($response);
