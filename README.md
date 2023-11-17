@@ -6,9 +6,13 @@
 
 # 使用技術
 使用したもの
+
 使用言語 ：html, css, JavaScript, php
+
 フレームワーク ：laravel
+
 DB ：MariaDB
+
 ツール ：chatGPT
 
 # トップページ
