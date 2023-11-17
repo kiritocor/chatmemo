@@ -1,59 +1,52 @@
 
 
-## About Laravel
+## chatmemoについて
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+・基本的にトップページ、会話の記録ページ、記録した内容を見るページ、メモの詳細・編集ページの4つの機能を有しているメモアプリです。
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# 使用技術
+使用したもの
+使用言語 ：html, css, JavaScript, php
+フレームワーク ：laravel
+DB ：MariaDB
+ツール ：chatGPT
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#トップページ
+・トップページのサイドバーではクリックすることで上3つは表示非表示を変えることが出来、下２つで会話セクション、記録セクションのページへ飛ぶことが出来ます。
 
-## Learning Laravel
+・直近のメモでは最近記録したメモが見れます。
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+・予定やるべきことではtodoが見れます。基本は未解決のtodoが表示されており、未解決のtodoはクリックすることで解決タブへ送ることが出来ます。
+解決タブを押すと解決されたtodoが見れます。
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+・カレンダーでは今日の日付が青く表示されており、予定などがあった場合その予定、締め切りがある日付は赤く表示されます。
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+#会話
+・会話セクションでは4つのジャンルに分かれてメモを記録することが出来ます。
 
-## Laravel Sponsors
+・メモの記録では、文字を入力、ボタンを押す、日時を選択することで記録することが出来ます。
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+#記録
+・記録セクションでは、メモの一覧を見ることができ、タグをつけたりフィルタリングすることが出来ます。
 
-### Premium Partners
+・タグは作成でき、作成したタグは選ぶの中にあるタグをドラッグアンドドロップでメモのタイトルにつけることで適用出来ます。
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+・メモのジャンル、重要度でフィルタリングが出来、上の検索バーでメモのタイトルを入力することでその名前のタイトルにフィルタリングすることが出来ます。
 
-## Contributing
+・記録ページなどから、メモのタイトルをクリックすると詳細編集ページに飛ぶことが出来ます。
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+#編集
 
-## Code of Conduct
+編集ボタンを押し、編集したいメッセージをクリックすることでメモを違う文字にしたり、はいかいいえを選択できたり、日時を変更出来ます。
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+制作背景
+・自分の考えや思ったことを既存のアプリでメモするとき、手軽に扱えるテンプレートや形式がないため、本当にメモしたいことが100%メモできていない
+というという課題、またメモした内容をもっと視覚的に見やすくしたいという課題を解決するため、普段チャット系のアプリがメモ代わりになっていることに着想を得て制作しました。
 
-## Security Vulnerabilities
+工夫した点
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+・とにかく使用するストレスを減らすこと、見やすいことを意識して、非同期の処理を多く採用しました。その結果、ページ数が減り、リダイレクトされることが少なく、画面をすらすら動かすことができています。
 
-## License
+・文字と文字が重なったりしないようcssに注意を払い、多くの文字情報は折りたためるようにし、画面をすっきりさせることが可能になりました。
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+・文字を入力するのみではなく、はいかいいえの選択肢、時間の選択肢を用意することによってメモを考える負担を減らしました。また、文字の入力、質問のふるまいもチャットらしくわかりやすいです。
