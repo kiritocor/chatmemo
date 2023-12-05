@@ -21,7 +21,7 @@ DB ：MariaDB
 もし、未登録の場合であれば、sign inから登録できます。
 アカウントを変えたいときはlogoutボタンを押してください。
 現在、loginを一回押しても再度同じページが表示される場合があるのでその場合はもう一度loginを押してください。
-![スクリーンショット (65)](https://github.com/kiritocor/chatmemo/assets/142217993/744e5ff2-3644-4f45-a93f-d1cad718ea12)
+![photodata](https://github.com/kiritocor/chatmemo/assets/142217993/744e5ff2-3644-4f45-a93f-d1cad718ea12)
 # トップページ
 ・トップページのサイドバーではクリックすることで上3つは表示非表示を変えることが出来、下２つで会話セクション、記録セクションのページへ飛ぶことが出来ます。
 
@@ -31,13 +31,13 @@ DB ：MariaDB
 解決タブを押すと解決されたtodoが見れます。
 
 ・カレンダーでは今日の日付が青く表示されており、予定などがあった場合その予定、締め切りがある日付は赤く表示されます。
-![スクリーンショット (67)](https://github.com/kiritocor/chatmemo/assets/142217993/2e29ea2d-4936-4fe8-82ee-1bdba051e8d9)
+![photodata](https://github.com/kiritocor/chatmemo/assets/142217993/2e29ea2d-4936-4fe8-82ee-1bdba051e8d9)
 
 # 会話
 ・会話セクションでは4つのジャンルに分かれてメモを記録することが出来ます。
 
 ・メモの記録では、文字を入力、ボタンを押す、日時を選択することで記録することが出来ます。
-![スクリーンショット (69)](https://github.com/kiritocor/chatmemo/assets/142217993/bb42ddc4-64b4-4dd5-a4bc-2892ee87f927)
+![photodata](https://github.com/kiritocor/chatmemo/assets/142217993/bb42ddc4-64b4-4dd5-a4bc-2892ee87f927)
 
 # 記録
 ・記録セクションでは、メモの一覧を見ることができ、タグをつけたりフィルタリングすることが出来ます。
@@ -47,13 +47,13 @@ DB ：MariaDB
 ・メモのジャンル、重要度でフィルタリングが出来、上の検索バーでメモのタイトルを入力することでその名前のタイトルにフィルタリングすることが出来ます。
 
 ・記録ページなどから、メモのタイトルをクリックすると詳細編集ページに飛ぶことが出来ます。
-![スクリーンショット (72)](https://github.com/kiritocor/chatmemo/assets/142217993/251982e3-0e55-4065-bdfe-2d126970f38d)
-![スクリーンショット (74)](https://github.com/kiritocor/chatmemo/assets/142217993/f1138ec4-8cd0-43e5-ada3-3cae7e60c2fd)
+![photodata](https://github.com/kiritocor/chatmemo/assets/142217993/251982e3-0e55-4065-bdfe-2d126970f38d)
+![photodata](https://github.com/kiritocor/chatmemo/assets/142217993/f1138ec4-8cd0-43e5-ada3-3cae7e60c2fd)
 # 編集
 
 編集ボタンを押し、編集したいメッセージをクリックすることでメモを違う文字にしたり、はいかいいえを選択できたり、日時を変更出来ます。
 また、投稿の削除もできます。
-![スクリーンショット (73)](https://github.com/kiritocor/chatmemo/assets/142217993/cded3ac1-cd9d-41d8-a899-bbcec85be748)
+![photodata](https://github.com/kiritocor/chatmemo/assets/142217993/cded3ac1-cd9d-41d8-a899-bbcec85be748)
 
 # 制作背景
 ・自分の考えや思ったことを既存のアプリでメモするとき、手軽に扱えるテンプレートや形式がないため、本当にメモしたいことが100%メモできていない
